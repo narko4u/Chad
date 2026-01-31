@@ -1,0 +1,46 @@
+#empirelabs-chat-launcher{
+  position:fixed; right:18px; bottom:18px; z-index:2147483000;
+  display:flex; align-items:center; justify-content:center;
+  width:56px; height:56px; border-radius:18px;
+  background:rgba(45,212,191,0.95); color:#052018;
+  box-shadow:0 10px 30px rgba(0,0,0,0.35);
+  cursor:pointer; user-select:none; font-weight:800;
+}
+#empirelabs-chat-panel{
+  position:fixed; right:18px; bottom:86px; z-index:2147483000;
+  width:360px; max-width:calc(100vw - 36px);
+  height:520px; max-height:calc(100vh - 120px);
+  border-radius:18px;
+  background:rgba(10,16,30,0.96);
+  border:1px solid rgba(255,255,255,0.10);
+  box-shadow:0 18px 45px rgba(0,0,0,0.45);
+  overflow:hidden; display:none;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+}
+#empirelabs-chat-header{
+  padding:12px 14px; display:flex; align-items:center; justify-content:space-between;
+  border-bottom:1px solid rgba(255,255,255,0.10);
+  color:#e8eefc;
+}
+#empirelabs-chat-body{
+  padding:12px 12px; height:calc(100% - 114px);
+  overflow:auto; color:#e8eefc;
+}
+.empire-msg{ margin:10px 0; line-height:1.35; white-space:pre-wrap; }
+.empire-user{ color:#9ae6b4; }
+.empire-bot{ color:#e8eefc; }
+#empirelabs-chat-input{
+  display:flex; gap:10px; padding:12px;
+  border-top:1px solid rgba(255,255,255,0.10);
+}
+#empirelabs-chat-text{
+  flex:1; border-radius:14px; padding:10px 12px;
+  border:1px solid rgba(255,255,255,0.15);
+  background:rgba(0,0,0,0.35); color:#e8eefc;
+}
+#empirelabs-chat-send{
+  border-radius:14px; padding:10px 12px; border:0;
+  background:#2dd4bf; color:#052018; font-weight:800; cursor:pointer;
+}
+#empirelabs-chat-send:disabled{ opacity:.6; cursor:not-allowed; }
+.empire-tag{ font-size:12px; opacity:.7; }
