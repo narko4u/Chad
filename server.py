@@ -1,3 +1,4 @@
+import requests
 import os
 
 # --- LLM Provider (Ollama local OR OpenRouter in cloud) ---
@@ -172,4 +173,5 @@ send.onclick = async () => {
 @app.get("/demo", response_class=HTMLResponse)
 def demo():
     return DEMO_HTML
+
 
