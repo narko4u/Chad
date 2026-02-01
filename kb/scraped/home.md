@@ -1,6 +1,6 @@
 ---
 source: https://empirelabs.com.au
-indexed_at: 1769857190
+indexed_at: 1769922101
 ---
 
 Three pillars

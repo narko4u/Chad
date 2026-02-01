@@ -1,4 +1,34 @@
 import os
+
+# --- LLM Provider (Ollama local OR OpenRouter in cloud) ---
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "").strip()
+OPENROUTER_MODEL   = os.getenv("OPENROUTER_MODEL", "openai/gpt-4o-mini").strip()
+OPENROUTER_BASE    = os.getenv("OPENROUTER_BASE", "https://openrouter.ai/api/v1").strip()
+OPENROUTER_SITE    = os.getenv("OPENROUTER_SITE", "https://empirelabs.com.au").strip()
+OPENROUTER_APP     = os.getenv("OPENROUTER_APP", "empirelabs-chad").strip()
+
+def _call_openrouter(messages, temperature=0.2, max_tokens=800):
+    if not OPENROUTER_API_KEY:
+        raise RuntimeError("OPENROUTER_API_KEY not set")
+
+    url = f"{OPENROUTER_BASE}/chat/completions"
+    headers = {
+        "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+        "Content-Type": "application/json",
+        # Optional but recommended by OpenRouter:
+        "HTTP-Referer": OPENROUTER_SITE,
+        "X-Title": OPENROUTER_APP,
+    }
+    payload = {
+        "model": OPENROUTER_MODEL,
+        "messages": messages,
+        "temperature": float(temperature),
+        "max_tokens": int(max_tokens),
+    }
+    r = requests.post(url, headers=headers, json=payload, timeout=90)
+    r.raise_for_status()
+    data = r.json()
+    return (data.get("choices") or [{}])[0].get("message", {}).get("content", "")
 import time
 import uuid
 import json
@@ -86,6 +116,16 @@ Operating rules
 """) or "").strip()
 
 # ------------------- FastAPI App -------------------
+
+def llm_chat(messages, temperature=0.2, max_tokens=800):
+    """
+    Uses OpenRouter if OPENROUTER_API_KEY is set; otherwise uses local Ollama.
+    """
+    if OPENROUTER_API_KEY:
+        return _call_openrouter(messages, temperature=temperature, max_tokens=max_tokens)
+    # Fallback: keep your existing Ollama path
+    return ollama_chat(messages, temperature=temperature, max_tokens=max_tokens)
+
 app = FastAPI(title=APP_NAME)
 
 app.add_middleware(
@@ -508,3 +548,4 @@ def demo():
     port = os.getenv("PORT", "8787")
     html = DEMO_HTML.replace("__HOST__", host).replace("__PORT__", str(port))
     return html
+
